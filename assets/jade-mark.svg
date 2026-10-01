@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Jade Wu monogram</title>
+  <desc id="desc">A cream J on a black square with a Jade green dot.</desc>
+  <rect width="64" height="64" fill="#11110F"/>
+  <circle cx="46" cy="18" r="10" fill="#0B9568"/>
+  <path d="M38 12v29c0 9-5 14-14 14-5 0-10-2-13-6l7-7c2 2 4 3 6 3 3 0 5-2 5-6V12h9Z" fill="#F2EFE7"/>
+</svg>

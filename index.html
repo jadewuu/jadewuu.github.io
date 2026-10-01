@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#F2EFE7" />
+  <meta name="description" content="Jade Wu 的个人网站。设计、系统与小工具。" />
+  <title>Jade Wu — Design / Systems / Small Tools</title>
+  <link rel="icon" type="image/svg+xml" href="assets/jade-mark.svg" />
+  <style>
+    @font-face { font-family: "Jade Display"; src: url("assets/URWBookman-Demi.otf") format("opentype"); font-weight: 700; font-display: swap; }
+    :root { --paper:#f2efe7; --ink:#11110f; --jade:#0b9568; --orange:#e84a13; --muted:#6d6c64; --line:#d9d7d0; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:Arial,Helvetica,sans-serif; font-size:16px; line-height:1.55; }
+    button { font:inherit; }
+    img { display:block; max-width:100%; }
+    a { color:inherit; }
+    .page-bg { position:fixed; inset:0; z-index:-1; pointer-events:none; background: radial-gradient(ellipse 68% 37% at 20% 7%, #fff9e7 0%, transparent 100%), radial-gradient(ellipse 57% 40% at 83% 70%, #ffffffa8 0%, transparent 100%), linear-gradient(#11110f08 1px, transparent 1px), linear-gradient(90deg,#11110f08 1px,transparent 1px); background-size:auto,auto,32px 32px,32px 32px; }
+    .col { width:min(100% - 48px, 810px); margin-inline:auto; }
+    .site-header { display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:88px; font-family:"Courier New",monospace; font-size:14px; letter-spacing:.04em; }
+    .brand { display:inline-flex; align-items:center; gap:9px; text-decoration:none; }
+    .brand-dot { width:9px; height:9px; border-radius:50%; background:var(--jade); box-shadow:0 0 0 2px var(--ink); }
+    .site-header .domain { color:var(--muted); text-decoration:none; }
+    .site-header .domain:hover { color:var(--ink); }
+    .hero { position:relative; display:flex; flex-direction:column; justify-content:center; min-height:min(780px, 91dvh); padding:74px 0 86px; }
+    .hero-copy { position:relative; z-index:1; }
+    .hero h1 { margin:0; font-family:Arial,Helvetica,sans-serif; font-size:clamp(90px, 15vw, 150px); font-weight:900; line-height:.84; letter-spacing:-.095em; }
+    .hero h1 span { display:block; }
+    .hero h1 span + span { margin-top:17px; }
+    .hero-portrait { position:absolute; right:-52px; top:49%; width:min(40%, 320px); height:auto; transform:translateY(-36%) rotate(5deg); border:9px solid var(--ink); background:var(--paper); box-shadow:14px 14px 0 var(--jade); }
+    .hero-sub { display:flex; flex-wrap:wrap; align-items:baseline; gap:20px; margin-top:35px; font-family:"Courier New",monospace; font-size:13px; letter-spacing:.04em; }
+    .hero-sub strong { font-family:"Jade Display",Georgia,serif; font-size:19px; letter-spacing:0; }
+    .hero-sub span { color:var(--muted); }
+    .scroll-cue { position:absolute; left:0; bottom:43px; margin:0; color:var(--muted); font-family:"Courier New",monospace; font-size:13px; }
+    .tabs-section { padding:58px 0 115px; }
+    .section-index { color:var(--jade); font-family:"Courier New",monospace; font-size:14px; font-weight:bold; }
+    .tabs { display:flex; flex-wrap:wrap; gap:14px 25px; align-items:center; padding:17px 0 31px; border-bottom:1px solid var(--line); }
+    .tab { border:0; border-bottom:3px solid transparent; padding:0 0 6px; background:transparent; color:#999890; cursor:pointer; font-size:clamp(18px,3vw,27px); font-weight:800; letter-spacing:-.04em; }
+    .tab:hover { color:var(--ink); }
+    .tab[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--jade); }
+    .tab-panel { padding-top:28px; }
+    .tab-panel[hidden] { display:none; }
+    .feature-card { overflow:hidden; border:1px solid #d8d7d0; border-radius:19px; background:#fffdfa; box-shadow:0 9px 29px #11110f0a; }
+    .feature-art { position:relative; background:#e8efe9; }
+    .feature-art img { width:100%; height:auto; }
+    .feature-info { display:grid; grid-template-columns:1fr auto; gap:20px; padding:28px 32px 32px; }
+    .feature-info h2, .about-text h2 { margin:0 0 11px; font-family:"Jade Display",Georgia,serif; font-size:clamp(29px,4vw,42px); line-height:1.12; letter-spacing:-.05em; }
+    .feature-info p, .about-text p { max-width:55ch; margin:0; color:#4f4e48; line-height:1.75; }
+    .card-num { color:var(--jade); font-family:"Courier New",monospace; font-size:13px; font-weight:bold; white-space:nowrap; }
+    .panel-note { margin:16px 2px 0; color:var(--muted); font-family:"Courier New",monospace; font-size:13px; }
+    .topics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .topic { display:flex; flex-direction:column; min-height:280px; padding:24px; border:1px solid #d8d7d0; border-radius:17px; background:#fffdfa; transition:transform .22s ease, box-shadow .22s ease; }
+    .topic:hover { transform:translateY(-5px); box-shadow:0 12px 25px #11110f13; }
+    .topic .card-num { margin-bottom:auto; }
+    .topic h2 { margin:35px 0 9px; font-family:"Jade Display",Georgia,serif; font-size:30px; letter-spacing:-.05em; }
+    .topic p { margin:0; color:#55544e; line-height:1.65; }
+    .about-card { display:grid; grid-template-columns:minmax(0,.65fr) minmax(0,1fr); gap:30px; align-items:center; padding:30px; border:1px solid #d8d7d0; border-radius:19px; background:#fffdfa; }
+    .about-card img { width:100%; height:auto; border-radius:8px; }
+    .about-text h2 { margin:17px 0; }
+    .about-text .small { margin-top:26px; color:var(--jade); font-family:"Courier New",monospace; font-size:13px; font-weight:bold; }
+    .site-footer { display:flex; align-items:end; justify-content:space-between; gap:20px; padding:28px 0 40px; border-top:1px solid var(--line); }
+    .site-footer strong { font-family:"Jade Display",Georgia,serif; font-size:26px; letter-spacing:-.06em; }
+    .site-footer span { color:var(--muted); font-family:"Courier New",monospace; font-size:13px; }
+    :focus-visible { outline:3px solid var(--orange); outline-offset:4px; }
+    @media (max-width:760px) {
+      .col { width:min(100% - 36px,810px); }
+      .site-header { min-height:72px; font-size:12px; }
+      .hero { min-height:700px; padding-top:35px; }
+      .hero h1 { font-size:clamp(77px,17vw,124px); }
+      .hero-portrait { right:2px; top:58%; width:43%; border-width:5px; box-shadow:8px 8px 0 var(--jade); }
+      .hero-sub { margin-top:30px; gap:8px; max-width:45%; }
+      .hero-sub span { font-size:11px; }
+      .topics { grid-template-columns:1fr; }
+      .topic { min-height:188px; }
+      .topic h2 { margin-top:26px; }
+      .about-card { grid-template-columns:1fr; }
+      .about-card img { max-width:280px; }
+    }
+    @media (max-width:480px) {
+      .hero { min-height:640px; }
+      .hero h1 { font-size:clamp(72px,20vw,100px); }
+      .hero-portrait { top:57%; width:48%; }
+      .tabs { gap:13px 19px; }
+      .tab { font-size:20px; }
+      .feature-info { grid-template-columns:1fr; padding:23px; }
+      .card-num { grid-row:1; }
+      .about-card { padding:20px; }
+    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .topic { transition:none; } }
+  </style>
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="col">
+    <header class="site-header">
+      <a href="#top" class="brand" aria-label="Jade Wu，返回顶部"><span class="brand-dot" aria-hidden="true"></span> JADE WU®</a>
+      <a class="domain" href="#explore">jadewu.online ↓</a>
+    </header>
+    <main id="top">
+      <section class="hero" aria-label="Jade Wu">
+        <div class="hero-copy">
+          <h1><span>Jade</span><span>Wu.</span></h1>
+          <div class="hero-sub"><strong>设计 / 系统 / 小工具</strong><span>DESIGN / SYSTEMS / SMALL TOOLS</span></div>
+        </div>
+        <img class="hero-portrait" src="assets/jade-avatar.webp" alt="Jade Wu 手绘肖像" width="1254" height="1254" fetchpriority="high" />
+        <p class="scroll-cue">↓ 往下看</p>
+      </section>
+      <section class="tabs-section" id="explore" aria-label="探索 Jade Wu">
+        <span class="section-index">01 / EXPLORE</span>
+        <div class="tabs" role="tablist" aria-label="网站栏目">
+          <button class="tab" type="button" id="tab-identity" role="tab" aria-controls="panel-identity" aria-selected="true" tabindex="0">视觉档案</button>
+          <button class="tab" type="button" id="tab-topics" role="tab" aria-controls="panel-topics" aria-selected="false" tabindex="-1">关注方向</button>
+          <button class="tab" type="button" id="tab-about" role="tab" aria-controls="panel-about" aria-selected="false" tabindex="-1">关于我</button>
+        </div>
+        <div class="tab-panel" id="panel-identity" role="tabpanel" aria-labelledby="tab-identity">
+          <article class="feature-card">
+            <div class="feature-art"><img src="assets/jade-hero.webp" alt="Jade Wu 品牌视觉：手绘人物、字标与翡翠绿图形" width="1672" height="941" loading="lazy" /></div>
+            <div class="feature-info"><div><h2>Jade Wu 的视觉世界</h2><p>手绘人物、粗线条和一点翡翠绿，组成这个个人网站的视觉语言。温暖、直接，也保留一点玩心。</p></div><span class="card-num">N° 01</span></div>
+          </article>
+          <p class="panel-note">IDENTITY / CHARACTER / WEB</p>
+        </div>
+        <div class="tab-panel" id="panel-topics" role="tabpanel" aria-labelledby="tab-topics" hidden>
+          <div class="topics">
+            <article class="topic"><span class="card-num">N° 01 / DESIGN</span><h2>设计</h2><p>让信息更清晰，也让表达更有温度。</p></article>
+            <article class="topic"><span class="card-num">N° 02 / SYSTEMS</span><h2>系统</h2><p>把复杂关系梳理成容易理解的结构。</p></article>
+            <article class="topic"><span class="card-num">N° 03 / TOOLS</span><h2>小工具</h2><p>关注真实的小问题，寻找轻巧的解决方式。</p></article>
+          </div>
+        </div>
+        <div class="tab-panel" id="panel-about" role="tabpanel" aria-labelledby="tab-about" hidden>
+          <article class="about-card"><img src="assets/jade-avatar.webp" alt="Jade Wu 的手绘肖像" width="1254" height="1254" loading="lazy" /><div class="about-text"><span class="card-num">ABOUT / JADE WU</span><h2>你好，我是 Jade。</h2><p>这是一个关于设计、系统和小工具的个人空间。我喜欢把散乱的想法整理清楚，再慢慢做成能被使用的东西。</p><p class="small">THOUGHTFUL / PRACTICAL / A LITTLE PLAYFUL</p></div></article>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer"><strong>Jade Wu.</strong><span>© 2026 · jadewu.online</span></footer>
+  </div>
+  <script>
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const selectTab = (tab, focus = false) => {
+      for (const item of tabs) {
+        const active = item === tab;
+        item.setAttribute('aria-selected', String(active));
+        item.tabIndex = active ? 0 : -1;
+        document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
+      }
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', event => {
+        let next = index;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        selectTab(tabs[next], true);
+      });
+    });
+  </script>
+</body>
+</html>
